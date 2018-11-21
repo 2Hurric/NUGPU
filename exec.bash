@@ -15,5 +15,5 @@ module load opencv
 cd /scratch/$USER/GPUClass18/FINPROJ/heq/
 
 set -o xtrace
-./heq input/bridge.png
+./heq input/Wikidata_Map_April_2016_Huge.png
 

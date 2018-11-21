@@ -26,6 +26,7 @@
 #define CUDA_TIMING
 #define DEBUG
 #define HIST_SIZE 256
+#define SCAN_SIZE HIST_SIZE*2
 
 unsigned char *input_gpu;
 unsigned char *output_gpu;
@@ -77,10 +78,32 @@ __global__ void kernel_hist(unsigned char *input,
 
 }
 
-// __global__ void kernel_cdf(float *cdf, unsigned int *hist_array, int size){
-	
+__global__ void kernel_cdf(float *cdf, unsigned int *hist_array, int size){
 
-// }
+	__shared__ float p[SCAN_SIZE];
+	int tid=blockIdx.x*blockDim.x+threadIdx.x;
+
+	if (tid<HIST_SIZE){
+		p[tid]=hist_array[tid] / (float)size;
+	}
+	__syncthreads();
+
+	for (int i=1; i<=HIST_SIZE;i*=2){
+		int ai=(threadIdx.x+1)*i*2-1;
+		if (ai<SCAN_SIZE) p[ai]+=p[ai-i];
+		__syncthreads();
+	}
+
+	for (int i=HIST_SIZE/2;i>0;i/=2){
+		int bi=(threadIdx.x+1)*i*2-1;
+		if (bi+i<SCAN_SIZE) p[bi+i]+=p[bi];
+		__syncthreads();
+	}
+
+	__syncthreads();
+	if (tid<HIST_SIZE) cdf[tid]+=p[threadIdx.x];
+
+}
 
 __global__ void kernel_equlization(unsigned char *output, 
 	                           unsigned char *input,
@@ -141,7 +164,8 @@ void histogram_gpu(unsigned char *data,
 
     dim3 dimGrid(gridXSize, gridYSize);
     dim3 dimBlock(TILE_SIZE, TILE_SIZE);
-    dim3 dimCDF(1 + (size - 1) / HIST_SIZE);
+    dim3 dimCdfGrid(1 + (size - 1) / HIST_SIZE);
+    dim3 dimCdfBlock(HIST_SIZE);
 
 	// Kernel Call
 	#if defined(CUDA_TIMING)
@@ -157,25 +181,29 @@ void histogram_gpu(unsigned char *data,
         checkCuda(cudaPeekAtLastError());                                     
         checkCuda(cudaDeviceSynchronize());
 
-        // kernel_cdf<<<dimCDF,  dimBlock>>>(cdf, hist_array,height*width);
+        kernel_cdf<<<dimCdfGrid,dimCdfBlock>>>(cdf, 
+        	                          hist_array,
+        	                          height*width);
+        checkCuda(cudaPeekAtLastError());                                     
+        checkCuda(cudaDeviceSynchronize());
    
 
-///////////////////////////////////////////        
-        checkCuda(cudaMemcpy(hist_cpu,
-        	hist_array,
-        	HIST_SIZE*sizeof(unsigned int),
-        	cudaMemcpyDeviceToHost));
-        checkCuda(cudaDeviceSynchronize());
-        cdf_cpu[0]=hist_cpu[0]/ ((float) height*width);
-        for (int i=1;i<HIST_SIZE;i++){
-        	cdf_cpu[i]=cdf_cpu[i-1]+hist_cpu[i]/ ((float) height*width);
-        }
-        checkCuda(cudaMemcpy(cdf,
-        	cdf_cpu,
-        	HIST_SIZE*sizeof(float),
-        	cudaMemcpyHostToDevice));
-        checkCuda(cudaDeviceSynchronize());
-///////////////////////////////////////////
+// ///////////////////////////////////////////        
+//         checkCuda(cudaMemcpy(hist_cpu,
+//         	hist_array,
+//         	HIST_SIZE*sizeof(unsigned int),
+//         	cudaMemcpyDeviceToHost));
+//         checkCuda(cudaDeviceSynchronize());
+//         cdf_cpu[0]=hist_cpu[0]/ ((float) height*width);
+//         for (int i=1;i<HIST_SIZE;i++){
+//         	cdf_cpu[i]=cdf_cpu[i-1]+hist_cpu[i]/ ((float) height*width);
+//         }
+//         checkCuda(cudaMemcpy(cdf,
+//         	cdf_cpu,
+//         	HIST_SIZE*sizeof(float),
+//         	cudaMemcpyHostToDevice));
+//         checkCuda(cudaDeviceSynchronize());
+// ///////////////////////////////////////////
 
 
 
