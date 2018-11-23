@@ -1,0 +1,70 @@
+HIST Kernel Execution Time: 1.782272 ms
+CDF Kernel Execution Time: 1.607392 ms
+EQUALIZATION Kernel Execution Time: 0.554336 ms
+Kernel Execution Time: 4.269312 ms
+CPU execution time: 11.8574 ms
+GPU execution time: 8.69946 ms
+Percentage difference: 0 %
+HIST Kernel Execution Time: 1.785632 ms
+CDF Kernel Execution Time: 1.615872 ms
+EQUALIZATION Kernel Execution Time: 0.554816 ms
+Kernel Execution Time: 4.337824 ms
+CPU execution time: 11.5394 ms
+GPU execution time: 8.67414 ms
+Percentage difference: 0 %
+HIST Kernel Execution Time: 1.782112 ms
+CDF Kernel Execution Time: 1.607200 ms
+EQUALIZATION Kernel Execution Time: 0.555680 ms
+Kernel Execution Time: 4.306912 ms
+CPU execution time: 11.6515 ms
+GPU execution time: 8.71507 ms
+Percentage difference: 0 %
+HIST Kernel Execution Time: 1.783776 ms
+CDF Kernel Execution Time: 1.618336 ms
+EQUALIZATION Kernel Execution Time: 0.555840 ms
+Kernel Execution Time: 4.396608 ms
+CPU execution time: 10.0871 ms
+GPU execution time: 9.54249 ms
+Percentage difference: 0 %
+HIST Kernel Execution Time: 1.782016 ms
+CDF Kernel Execution Time: 1.608320 ms
+EQUALIZATION Kernel Execution Time: 0.552832 ms
+Kernel Execution Time: 4.294304 ms
+CPU execution time: 11.842 ms
+GPU execution time: 8.67441 ms
+Percentage difference: 0 %
+HIST Kernel Execution Time: 1.783968 ms
+CDF Kernel Execution Time: 1.621056 ms
+EQUALIZATION Kernel Execution Time: 0.555360 ms
+Kernel Execution Time: 5.266656 ms
+CPU execution time: 13.0824 ms
+GPU execution time: 9.3634 ms
+Percentage difference: 0 %
+HIST Kernel Execution Time: 1.781088 ms
+CDF Kernel Execution Time: 1.610560 ms
+EQUALIZATION Kernel Execution Time: 0.556256 ms
+Kernel Execution Time: 6.252896 ms
+CPU execution time: 13.1799 ms
+GPU execution time: 10.43 ms
+Percentage difference: 0 %
+HIST Kernel Execution Time: 1.784704 ms
+CDF Kernel Execution Time: 1.610272 ms
+EQUALIZATION Kernel Execution Time: 0.553216 ms
+Kernel Execution Time: 6.297024 ms
+CPU execution time: 13.1683 ms
+GPU execution time: 10.345 ms
+Percentage difference: 0 %
+HIST Kernel Execution Time: 1.787168 ms
+CDF Kernel Execution Time: 1.609856 ms
+EQUALIZATION Kernel Execution Time: 0.555712 ms
+Kernel Execution Time: 4.318688 ms
+CPU execution time: 11.7779 ms
+GPU execution time: 9.27007 ms
+Percentage difference: 0 %
+HIST Kernel Execution Time: 1.788000 ms
+CDF Kernel Execution Time: 1.615360 ms
+EQUALIZATION Kernel Execution Time: 0.555904 ms
+Kernel Execution Time: 4.334816 ms
+CPU execution time: 13.6096 ms
+GPU execution time: 9.09206 ms
+Percentage difference: 0 %

@@ -9,12 +9,12 @@
 #SBATCH --gres=gpu:k20:1
 #SBATCH --output=exec_proj.%j.out
 
-module load legacy #To be able to load the old modules
-module load opencv
+#module load legacy #To be able to load the old modules
+#module load opencv
 
 iterations=10
 
-cd /scratch/$USER/GPUClass18/FINPROJ/heq/
+#cd /scratch/$USER/GPUClass18/FINPROJ/heq/
 
 #image
 image="input/bridge.png"

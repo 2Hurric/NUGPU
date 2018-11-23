@@ -9,11 +9,12 @@
 #SBATCH --gres=gpu:k20:1
 #SBATCH --output=exec_heq.%j.out
 
-module load legacy #To be able to load the old modules
-module load opencv
+#module load legacy #To be able to load the old modules
+#module load opencv
 
-cd /scratch/$USER/GPUClass18/FINPROJ/heq/
+#cd /scratch/$USER/GPUClass18/FINPROJ/heq/
 
 set -o xtrace
-./heq input/Wikidata_Map_April_2016_Huge.png
+#./heq input/Wikidata_Map_April_2016_Huge.png
+./heq input/bridge.png
 
