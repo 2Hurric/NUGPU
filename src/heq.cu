@@ -65,18 +65,36 @@ __global__ void kernel_hist(unsigned char *input,
     // HIST_SIZE 256
     __shared__ unsigned int hist_shared[HIST_SIZE];
 
-    if (block_loc<HIST_SIZE) hist_shared[block_loc]=0;
+    /*if (block_loc<HIST_SIZE) hist_shared[block_loc]=0;
+    __syncthreads();*/
+    hist_shared[block_loc]=0;
     __syncthreads();
 
     if (x<width && y<height) atomicAdd(&(hist_shared[input[location]]),1);
     __syncthreads();
 
-    if (block_loc<HIST_SIZE) {
-        atomicAdd(&(hist[block_loc]),(float)hist_shared[block_loc]);
-    }
+    //if (block_loc<HIST_SIZE) {
+    atomicAdd(&(hist[block_loc]),(float)hist_shared[block_loc]);
+    //}
+}
 
+__global__ void kernel_hist_global(unsigned char *input, 
+                       float *hist, unsigned int height, unsigned int width){
+
+    int x = blockIdx.x*TILE_SIZE+threadIdx.x;
+    int y = blockIdx.y*TILE_SIZE+threadIdx.y;
+
+    int location =  y*TILE_SIZE*gridDim.x+x;
+    // int block_loc = threadIdx.y*TILE_SIZE+threadIdx.x;
+    // HIST_SIZE 256
+    //__shared__ unsigned int hist_shared[HIST_SIZE];
+
+    if (x<width && y<height) atomicAdd(&(hist[input[location]]),1);
+    __syncthreads();
 
 }
+
+
 
 __global__ void kernel_cdf(float *hist_array, int size){
 
@@ -88,19 +106,18 @@ __global__ void kernel_cdf(float *hist_array, int size){
     }
     __syncthreads();
 
-    for (int i=1; i<=HIST_SIZE;i*=2){
+    for (int i=1; i<=HIST_SIZE;i=i<<1){
         int ai=(threadIdx.x+1)*i*2-1;
         if (ai<HIST_SIZE) p[ai]+=p[ai-i];
         __syncthreads();
     }
 
-    for (int i=HIST_SIZE/2;i>0;i/=2){
+    for (int i=HIST_SIZE/2;i>0;i=i>>1){
         int bi=(threadIdx.x+1)*i*2-1;
         if (bi+i<HIST_SIZE) p[bi+i]+=p[bi];
         __syncthreads();
     }
 
-    __syncthreads();
     if (tid<HIST_SIZE) hist_array[tid]=p[threadIdx.x];
 
 }
@@ -167,7 +184,7 @@ void histogram_gpu(unsigned char *data,
 
     dim3 dimGrid(gridXSize, gridYSize);
     dim3 dimBlock(TILE_SIZE, TILE_SIZE);
-    dim3 dimCdfGrid(1 + (size - 1) / HIST_SIZE);
+    dim3 dimCdfGrid(1);
     dim3 dimCdfBlock(HIST_SIZE);
 
     // Kernel Call

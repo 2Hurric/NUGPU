@@ -15,6 +15,6 @@
 #cd /scratch/$USER/GPUClass18/FINPROJ/heq/
 
 set -o xtrace
-#./heq input/Wikidata_Map_April_2016_Huge.png
-./heq input/bridge.png
+#nvprof ./heq input/Wikidata_Map_April_2016_Huge.png
+nvprof ./heq input/bridge.png
 
