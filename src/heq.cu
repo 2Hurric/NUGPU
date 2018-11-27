@@ -374,9 +374,9 @@ void histogram_gpu_warmup(unsigned char *data,
         TIMER_START(Ktime);
     #endif
         
-        float Ktime0;
-        TIMER_CREATE(Ktime0);
-        TIMER_START(Ktime0);
+        // float Ktime0;
+        // TIMER_CREATE(Ktime0);
+        // TIMER_START(Ktime0);
         kernel_hist<<<dimGrid, dimBlock>>>(input_gpu, 
                                       hist_array,
                                       height,
