@@ -247,9 +247,9 @@ void histogram_gpu(unsigned char *data,
         TIMER_START(Ktime);
     #endif
         
-        float Ktime0;
-        TIMER_CREATE(Ktime0);
-        TIMER_START(Ktime0);
+        // float Ktime0;
+        // TIMER_CREATE(Ktime0);
+        // TIMER_START(Ktime0);
         kernel_hist<<<dimGrid, dimBlock>>>(input_gpu, 
                                       hist_array,
                                       height,
@@ -257,8 +257,8 @@ void histogram_gpu(unsigned char *data,
 
         checkCuda(cudaPeekAtLastError());                                     
         checkCuda(cudaDeviceSynchronize());
-        TIMER_END(Ktime0);
-        printf("HIST Kernel Execution Time: %f ms\n", Ktime0);
+        //TIMER_END(Ktime0);
+        //printf("HIST Kernel Execution Time: %f ms\n", Ktime0);
 
         // float Ktime1;
         // TIMER_CREATE(Ktime1);
